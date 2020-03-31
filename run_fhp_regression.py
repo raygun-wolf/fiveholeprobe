@@ -1,9 +1,9 @@
 #===================================
 from fcn_fiveholeprobe import fhp_sim,fhp
-from numpy import arange,concatenate
+from numpy import arange,concatenate,sqrt
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score
+from sklearn.metrics import r2_score,mean_squared_error
 import matplotlib.pyplot as plt
 
 # loop through h, mach, alpha, beta
@@ -33,13 +33,14 @@ for h in h_alt:
 # alpha regression
 x1 = df['k_alpha'].values.reshape(-1,1)
 y = df['alpha'].values.reshape(-1,1)
-
 regressor = LinearRegression()
 regressor.fit(x1,y)
-print(regressor.intercept_)
-print(regressor.coef_)
+#print(regressor.intercept_)
+#print(regressor.coef_)
 y_pred = regressor.predict(x1)
-print(r2_score(y,y_pred))
+print('alpha:')
+print(f'R2 score is {r2_score(y,y_pred)}')
+print(f'RMSE is {sqrt(mean_squared_error(y,y_pred))}')
 plt.plot(x1,y,x1,y_pred)
 
 
@@ -48,13 +49,14 @@ x1 = df['k_beta'].values.reshape(-1,1)
 x2 = df['k_alpha'].values.reshape(-1,1)
 X = concatenate((x1,x2),axis=1)
 y = df['beta'].values.reshape(-1,1)
-
 regressor = LinearRegression()
 regressor.fit(X,y)
-print(regressor.intercept_)
-print(regressor.coef_)
+#print(regressor.intercept_)
+#print(regressor.coef_)
 y_pred = regressor.predict(X)
-print(r2_score(y,y_pred))
+print('beta:')
+print(f'R2 score is {r2_score(y,y_pred)}')
+print(f'RMSE is {sqrt(mean_squared_error(y,y_pred))}')
 plt.plot(x1,y,x1,y_pred)
 
 # static pressure regression
@@ -62,13 +64,14 @@ x1 = df['k_p_static'].values.reshape(-1,1)
 x2 = df['k_mach'].values.reshape(-1,1)
 X = concatenate((x1,x2),axis=1)
 y = df['p_static'].values.reshape(-1,1)
-
 regressor = LinearRegression()
 regressor.fit(X,y)
-print(regressor.intercept_)
-print(regressor.coef_)
+#print(regressor.intercept_)
+#print(regressor.coef_)
 y_pred = regressor.predict(X)
-print(r2_score(y,y_pred))
+print('p_static:')
+print(f'R2 score is {r2_score(y,y_pred)}')
+print(f'RMSE is {sqrt(mean_squared_error(y,y_pred))}')
 plt.plot(x1,y,x1,y_pred)
 
 
@@ -79,13 +82,14 @@ x3 = df['k_alpha'].values.reshape(-1,1)
 x4 = df['k_beta'].values.reshape(-1,1)
 X = concatenate((x1,x2,x3,x4),axis=1)
 y = df['p_total'].values.reshape(-1,1)
-
 regressor = LinearRegression()
 regressor.fit(X,y)
-print(regressor.intercept_)
-print(regressor.coef_)
+#print(regressor.intercept_)
+#print(regressor.coef_)
 y_pred = regressor.predict(X)
-print(r2_score(y,y_pred))
+print('p_total:')
+print(f'R2 score is {r2_score(y,y_pred)}')
+print(f'RMSE is {sqrt(mean_squared_error(y,y_pred))}')
 plt.plot(x1,y,x1,y_pred)
 
 

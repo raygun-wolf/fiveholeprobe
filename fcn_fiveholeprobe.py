@@ -49,8 +49,9 @@ def fhp_sim(h=0,mach=0,alpha=0,beta=0):
     
 def fhp(p_1=2116.22,p_2=2116.22,p_3=2116.22,p_4=2116.22,p_5=2116.22):
     """
-    Function takes pressures measured by a five-hole probe and estimates the 
-    corresponding altitude, Mach number, angle of attack, and angle of sideslip.
+    Function takes pressures measured by a five-hole probe and calculates 
+    calibration coefficients for altitude, Mach number, angle of attack, 
+    and angle of sideslip.
     Reference 1:  JOURNAL OF AIRCRAFT Vol. 43, No. 3, May–June 2006, 
     New Method for Evaluating the Hemispheric Five-Hole Probes, 
     AIAA-16197-343
