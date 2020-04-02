@@ -170,13 +170,13 @@ plt.legend(['train, alpha','train, beta','test, alpha','test, beta'])
 #==============================================================
 # use neural network to generate regression using measured pressures directly
 # instead of the calibration coefficients output by fhp
-# p_static and p_total
+# p_static and qc
 
 X = train[['p_1','p_2','p_3','p_4','p_5']].values
-y = train[['p_static','p_total']].values.squeeze()
+y = train[['p_static','qc']].values.squeeze()
 
 Xtest = test[['p_1','p_2','p_3','p_4','p_5']].values
-ytest = test[['p_static','p_total']].values.squeeze()
+ytest = test[['p_static','qc']].values.squeeze()
 
 max_iter = 10000
 hidden = (20,20)  # number of neurons in ith hidden layer
@@ -192,18 +192,18 @@ loss_train = square(y-yhat).mean()
 print(f'{len(hidden)} hidden layer with {hidden} perceptrons, loss = {loss}, R2 = {R2}')
 
 plt.plot(y,yhat,'ro',ytest,yhattest,'bx')
-plt.legend(['train, p_static','train, p_total','test, p_static','test, p_total'])
+plt.legend(['train, p_static','train, qc','test, p_static','test, qc'])
 
 # Use NN p_static and p_total to calculate altitude and Mach number, compare 
 # with truth values
 
 p_static_hat = yhat[:,0]
-p_total_hat = yhat[:,1]
+qc_hat = yhat[:,1]
 p_static_hat_test = yhattest[:,0]
-p_total_hat_test = yhattest[:,1]
+qc_hat_test = yhattest[:,1]
 
-machhat = qcparatio_to_mach((p_total_hat-p_static_hat)/p_static_hat)
-machhattest = qcparatio_to_mach((p_total_hat_test-p_static_hat_test)/p_static_hat_test)
+machhat = qcparatio_to_mach((qc_hat)/p_static_hat)
+machhattest = qcparatio_to_mach((qc_hat_test)/p_static_hat_test)
 hhat = std_atm76_pressure_altitude(p_static_hat)
 hhattest = std_atm76_pressure_altitude(p_static_hat_test)
 
@@ -219,4 +219,6 @@ error_htest = hhattest - htest
 error_mach = machhat - mach
 error_machtest = machhattest - machtest
 
-s
+plt.plot(h,error_h,'ro',htest,error_htest,'bx')
+plt.figure()
+plt.plot(mach,error_mach,'ro',machtest,error_machtest,'bx')
