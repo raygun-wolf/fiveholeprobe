@@ -1,4 +1,15 @@
-# fiveholeprobe
+# run_fhp_regression
+This script uses fhp_sim to simulate pressures from a five hole probe over
+a range of conditions. It also runs fhp to take those pressures and calculate
+calibration coefficients. the regression then takes those calibration coefficients
+or raw pressures and performs multiple linear regression to compute alpha, beta, 
+p_static, and p_total. 
+
+The second portion of the script generates neural networks to duplicate the 
+linear regressions.
+
+
+# fcn_fiveholeprobe
 simulation of five hole probe based on potential flow theory
 File contains two python functions:
 
