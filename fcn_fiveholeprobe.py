@@ -88,5 +88,44 @@ def fhp(p_1=2116.22,p_2=2116.22,p_3=2116.22,p_4=2116.22,p_5=2116.22):
     return k_mach,k_p_static,k_p_total,k_alpha,k_beta
 
 
+def fhp_sim_state_vector(Xbar,port=None):
+    """
+    Function that simulates pressures measured by a 5-hole probe.
+    Reference Reference JOURNAL OF AIRCRAFT Vol. 43, No. 3, May–June 2006, 
+    New Method for Evaluating the Hemispheric Five-Hole Probes, 
+    AIAA-16197-343
+      1
+    3 5 4
+      2
+    
+    Takes a state vector (Xbar) as an input instead of h, Mach, alpha, beta.
+    This version is used for SEADS development work. 
+    Reference: AIAA 81-2455 Innovative air data system for the space shuttle orbiter: Data analysis methods
+    """
+    from fcn_fiveholeprobe import fhp_sim
+    from pfqtoolbox import std_atm76_pressure_altitude,qcparatio_to_mach
+
+    Pt = Xbar[0]
+    Pinf = Xbar[1]
+    alpha = Xbar[2]
+    beta= Xbar[3]
+    
+    h = std_atm76_pressure_altitude(Pinf)
+    Mach = qcparatio_to_mach((Pt-Pinf)/Pinf)
+    p_1,p_2,p_3,p_4,p_5,qc,q_inf,p_static,p_total = fhp_sim(h,Mach,alpha,beta)
+    
+    if port == None:
+        return p_1,p_2,p_3,p_4,p_5
+    elif port == 'p_1':
+        return p_1
+    elif port == 'p_2':
+        return p_2
+    elif port == 'p_3':
+        return p_3
+    elif port == 'p_4':
+        return p_4
+    elif port == 'p_5':
+        return p_5
+    
     
 
